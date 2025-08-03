@@ -11,6 +11,13 @@ class DashboardScreen extends StatelessWidget {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  String _greetingMessage() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return "Good Morning!";
+    if (hour < 17) return "Good Afternoon!";
+    return "Good Evening!";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,26 +46,52 @@ class DashboardScreen extends StatelessWidget {
         child: ListView(
           children: [
             Text(
+              _greetingMessage(),
+              style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
               "Welcome to your Dashboard!",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
             SizedBox(height: 24),
-            ElevatedButton.icon(
-              icon: Icon(Icons.add),
-              label: Text("Create Kundali"),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => KundaliFormScreen(token: token)),
+            Card(
+              elevation: 2,
+              child: ListTile(
+                leading: Icon(Icons.add, color: Theme.of(context).primaryColor),
+                title: Text("Create Kundali"),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => KundaliFormScreen(token: token)),
+                ),
               ),
             ),
-            SizedBox(height: 16),
-            ElevatedButton.icon(
-              icon: Icon(Icons.list),
-              label: Text("View Kundalis"),
-              onPressed: () {
-                // TODO: Implement navigation to Kundali list screen
-              },
+            SizedBox(height: 12),
+            Card(
+              elevation: 2,
+              child: ListTile(
+                leading: Icon(Icons.list, color: Theme.of(context).primaryColor),
+                title: Text("View Kundalis"),
+                onTap: () {
+                  // TODO: Implement navigation to Kundali list screen
+                },
+              ),
+            ),
+            SizedBox(height: 24),
+            Text(
+              "Recent Activity",
+              style: Theme.of(context).textTheme.subtitle1?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Card(
+              elevation: 1,
+              child: ListTile(
+                leading: Icon(Icons.history),
+                title: Text("No recent activity"),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
